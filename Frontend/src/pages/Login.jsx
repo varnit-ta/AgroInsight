@@ -1,62 +1,60 @@
-import {useState} from "react";
-import {useLogin} from "../hooks/useLogin";
+import { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        contact: '',
-        password: '',
+  const [formData, setFormData] = useState({
+    contact: "",
+    password: "",
+  });
+
+  const { login, error, isLoading } = useLogin();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
     });
+  };
 
-    const {login, error, isLoading} = useLogin();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(formData.contact, formData.password);
+  };
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    }
+  return (
+    <div>
+      <form onSubmit={handleSubmit} className="login">
+        <h1 style={{ margin: 0 }}>Login</h1>
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        await login(
-            formData.contact,
-            formData.password
-        );
-    }
+        <input
+          type="text"
+          name="contact"
+          placeholder="Contact"
+          value={formData.contact}
+          onChange={handleChange}
+        />
 
-    return(
-        <div>
-            
-            <form onSubmit={handleSubmit} className="login">
-                <h1 style={{"margin": 0}}>Login</h1>
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+        />
 
-                <input
-                    type="text"
-                    name="contact"
-                    placeholder="Contact"
-                    value={formData.contact}
-                    onChange={handleChange}
-                />
+        <p>
+          Need to Register ? <Link to="/signup">Sign Up</Link>
+        </p>
 
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
+        <button disabled={isLoading}>
+          {isLoading ? "Loading..." : "Login"}
+        </button>
 
-                <p>Need to Register ? <Link to='/signup'>Sign Up</Link></p>
-
-                <button disabled={isLoading}>
-                    {isLoading ? 'Loading...' : 'Login'}
-                </button>
-
-                {error && <div className="error">{error}</div>}
-            </form>
-        </div>
-    )
-}
+        {error && <div className="error">{error}</div>}
+      </form>
+    </div>
+  );
+};
 
 export default Login;

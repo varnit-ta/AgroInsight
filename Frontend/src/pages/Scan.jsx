@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState } from "react";
+import { useDropzone } from "react-dropzone";
 import farmersImage from "../assets/farmer.jpeg";
 import uploadIcon from "../assets/uploadIcon.png";
-import UploadedFile from '../components/UploadedFile';
-import PredictionBox from '../components/PredictionBox';
+import UploadedFile from "../components/UploadedFile";
+import PredictionBox from "../components/PredictionBox";
 
 const Scan = () => {
   const [files, setFiles] = useState([]);
   const [prediction, setPrediction] = useState([]);
-  
+
   const getPrediction = () => {
     setPrediction([]);
     files.map(async (file) => {
       fetch(`${process.env.MODEL_URI}/model/train`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({data: file[0].base64Data})
+        body: JSON.stringify({ data: file[0].base64Data }),
       })
-      .then(response => response.json())
-      .then((result) => {
-        // Append new predictions to the existing ones
-        setPrediction((prevPredictions) => [
-          ...prevPredictions,
-          result.percentage
-        ]);
-      });
+        .then((response) => response.json())
+        .then((result) => {
+          // Append new predictions to the existing ones
+          setPrediction((prevPredictions) => [
+            ...prevPredictions,
+            result.percentage,
+          ]);
+        });
     });
   };
 
@@ -37,7 +37,7 @@ const Scan = () => {
           const reader = new FileReader();
           reader.onload = () => {
             if (reader.readyState === FileReader.DONE) {
-              const base64Data = reader.result.split(',')[1];
+              const base64Data = reader.result.split(",")[1];
               resolve({
                 name: file.name,
                 type: file.type,
@@ -50,16 +50,13 @@ const Scan = () => {
           reader.readAsDataURL(file);
         });
       });
-    
+
       Promise.all(convertedFiles)
         .then((base64Files) => {
-          setFiles((prevfiles) => [
-            ...prevfiles,
-            base64Files
-          ]);
+          setFiles((prevfiles) => [...prevfiles, base64Files]);
         })
         .catch((error) => {
-          console.error('Error converting files:', error);
+          console.error("Error converting files:", error);
         });
     };
 
@@ -76,14 +73,11 @@ const Scan = () => {
         </div>
 
         <div className="right-right">
-          <div style={{padding: "5px"}}>
-            {
-              (files.length > 0) && (
-                  files.map((file, index) => (
-                    <UploadedFile key={index} file={file}/>
-                  ))
-              ) 
-            }
+          <div style={{ padding: "5px" }}>
+            {files.length > 0 &&
+              files.map((file, index) => (
+                <UploadedFile key={index} file={file} />
+              ))}
             <button onClick={getPrediction}>Upload</button>
           </div>
         </div>
@@ -98,9 +92,9 @@ const Scan = () => {
           <div className="scan-page">
             <div className="left">
               <div className="left-left">
-                <img src={farmersImage}/>
+                <img src={farmersImage} />
               </div>
-              
+
               <div className="left-right">
                 <p>
                   Let <span>technology</span> watch over your <br />
@@ -115,12 +109,14 @@ const Scan = () => {
               <div className="engulf-right">
                 <div className="right-heading">
                   <div className="text-wrapper-1">File Upload</div>
-                  <p className="text-wrapper-2">Upload at least 3 images of the crops</p>
+                  <p className="text-wrapper-2">
+                    Upload at least 3 images of the crops
+                  </p>
                 </div>
 
                 {/*This is the overall group (contains adding and listing of file)*/}
-                <FileUpload/>
-              </div>  
+                <FileUpload />
+              </div>
             </div>
           </div>
         </div>

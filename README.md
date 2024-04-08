@@ -13,7 +13,7 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/varnit-ta/AgroInsight?color=dark-green) ![Forks](https://img.shields.io/github/forks/varnit-ta/AgroInsight?style=social) ![Repository Views](https://komarev.com/ghpvc/?username=varnit-ta&label=Repository+Views&color=brightgreen)
+![Contributors](https://img.shields.io/github/contributors/varnit-ta/AgroInsight?color=dark-green) ![Forks](https://img.shields.io/github/forks/varnit-ta/AgroInsight?style=social)
 
 ## About The Project
 
